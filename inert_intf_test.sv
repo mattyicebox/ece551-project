@@ -1,4 +1,4 @@
-module intert_intf_test (
+module inert_intf_test (
     input logic clk,
     input logic RST_n,
     output logic [7:0] LED,
