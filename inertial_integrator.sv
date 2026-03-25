@@ -1,7 +1,7 @@
 module inertial_integrator(clk,rst_n,strt_cal,cal_done,vld,rdy,yaw_rt,
                            IR_Dtrm,heading,moving,en_fusion);
 						   
-  parameter FAST_SIM = 1;		// used for speeding up simulations.
+  parameter FAST_SIM = 0;		// used for speeding up simulations.
 
   input clk, rst_n;
   input strt_cal;						// goes high to initiate calibration
