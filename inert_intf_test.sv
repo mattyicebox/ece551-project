@@ -49,7 +49,10 @@ inert_intf intf (
     .INT(INT),
     .strt_cal(strt_cal),
     .cal_done(cal_done),
-    .heading(heading)
+    .heading(heading),
+    .en_fusion(1'b0), // Enable fusion for testing
+    .moving(1'b1),     // Assume always moving for testing
+    .IR_Dtrm(9'h0)
 );
 
 // 17-bit free-running timer
