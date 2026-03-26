@@ -24,7 +24,8 @@ logic timer_full;
 // Calibration control
 logic strt_cal;
 logic cal_done;
-logic [15:0] heading;
+logic rdy;                        // FIX 1: added rdy to receive inert_intf output
+logic signed [11:0] heading;     // FIX 2: was [15:0], must match inert_intf's [11:0] signed
 
 // LED output register
 logic [7:0] led_reg;
@@ -50,8 +51,9 @@ inert_intf intf (
     .strt_cal(strt_cal),
     .cal_done(cal_done),
     .heading(heading),
-    .en_fusion(1'b0), // Enable fusion for testing
-    .moving(1'b1),     // Assume always moving for testing
+    .rdy(rdy),                   // FIX 1: was missing entirely
+    .en_fusion(1'b0),
+    .moving(1'b1),
     .IR_Dtrm(9'h0)
 );
 
@@ -107,7 +109,7 @@ always_ff @(posedge clk or negedge rst_n) begin
         case (state)
             IDLE: led_reg <= 8'h00;
             CAL:  led_reg <= 8'hA5;
-            DISP: led_reg <= heading[11:4];
+            DISP: led_reg <= heading[11:4];  // top 8 of 12-bit heading
             default: led_reg <= 8'h00;
         endcase
     end

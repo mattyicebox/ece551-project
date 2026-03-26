@@ -1,0 +1,149 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+dC:/Users/matts/Desktop/ECE551/EX14
+vinert_intf
+Z0 DXx6 sv_std 3 std 0 22 WmjPaeP=7F5?QFXzJ>D[Q2
+Z1 !s110 1774492511
+!i10b 1
+!s100 6OdVR_?lA>hSFfXOaNWYT0
+I;jXVWafnE:M2VZBFQ;bBj0
+Z2 VDg1SIo80bB@j0V0VzS_@n1
+!s105 inert_intf_sv_unit
+S1
+Z3 dC:/Users/matts/Documents/ece551-project
+Z4 w1774492314
+8C:/Users/matts/Documents/ece551-project/inert_intf.sv
+FC:/Users/matts/Documents/ece551-project/inert_intf.sv
+L0 7
+Z5 OV;L;10.4d;61
+r1
+!s85 0
+31
+Z6 !s108 1774492511.000000
+!s107 C:/Users/matts/Documents/ece551-project/inert_intf.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/Users/matts/Documents/ece551-project/inert_intf.sv|
+!i113 1
+Z7 o-work work -sv
+vinert_intf_test
+R0
+!s110 1774492791
+!i10b 1
+!s100 XDS>d=I9I<BR2^Ib??KND0
+I9Uha=mUj@hL<VckhR18dF1
+R2
+!s105 inert_intf_test_sv_unit
+S1
+R3
+w1774492781
+8C:/Users/matts/Documents/ece551-project/inert_intf_test.sv
+FC:/Users/matts/Documents/ece551-project/inert_intf_test.sv
+L0 1
+R5
+r1
+!s85 0
+31
+!s108 1774492791.000000
+!s107 C:/Users/matts/Documents/ece551-project/inert_intf_test.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/Users/matts/Documents/ece551-project/inert_intf_test.sv|
+!i113 1
+R7
+vinert_intf_test_tb
+R0
+!s110 1774492949
+!i10b 1
+!s100 5>XR@lQKK^kE_8^@zjOE13
+I5SZWg37ZF<gmQjOlWV1Tj1
+R2
+!s105 inert_intf_test_tb_sv_unit
+S1
+R3
+w1774492941
+8C:/Users/matts/Documents/ece551-project/inert_intf_test_tb.sv
+FC:/Users/matts/Documents/ece551-project/inert_intf_test_tb.sv
+L0 4
+R5
+r1
+!s85 0
+31
+!s108 1774492949.000000
+!s107 C:/Users/matts/Documents/ece551-project/inert_intf_test_tb.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/Users/matts/Documents/ece551-project/inert_intf_test_tb.sv|
+!i113 1
+R7
+vinertial_integrator
+R0
+R1
+!i10b 1
+!s100 GTeZ7V1:a<Gfd^ojf_@Z^3
+I4DKMLmC>9GB5=n0jl_I272
+R2
+!s105 inertial_integrator_sv_unit
+S1
+R3
+R4
+8C:/Users/matts/Documents/ece551-project/inertial_integrator.sv
+FC:/Users/matts/Documents/ece551-project/inertial_integrator.sv
+L0 1
+R5
+r1
+!s85 0
+31
+R6
+!s107 C:/Users/matts/Documents/ece551-project/inertial_integrator.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/Users/matts/Documents/ece551-project/inertial_integrator.sv|
+!i113 1
+R7
+vreset_synch
+R0
+R1
+!i10b 1
+!s100 cB=;hEWNf1gi:T2<P^oY90
+Im]iMb^1h]1MlnRfOb=]Fd2
+R2
+!s105 reset_synch_sv_unit
+S1
+R3
+R4
+8C:/Users/matts/Documents/ece551-project/reset_synch.sv
+FC:/Users/matts/Documents/ece551-project/reset_synch.sv
+L0 1
+R5
+r1
+!s85 0
+31
+R6
+!s107 C:/Users/matts/Documents/ece551-project/reset_synch.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/Users/matts/Documents/ece551-project/reset_synch.sv|
+!i113 1
+R7
+vSPI_main
+R0
+R1
+!i10b 1
+!s100 1^^0Ufem;k;8ecL^iRB=z1
+Io8[4RX0g@oj8dEMFM:k8n1
+R2
+!s105 SPI_main_sv_unit
+S1
+R3
+R4
+8C:/Users/matts/Documents/ece551-project/SPI_main.sv
+FC:/Users/matts/Documents/ece551-project/SPI_main.sv
+L0 1
+R5
+r1
+!s85 0
+31
+R6
+!s107 C:/Users/matts/Documents/ece551-project/SPI_main.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/Users/matts/Documents/ece551-project/SPI_main.sv|
+!i113 1
+R7
+n@s@p@i_main
