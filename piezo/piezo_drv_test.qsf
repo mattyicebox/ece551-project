@@ -99,5 +99,5 @@ set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to piezo_n
 set_global_assignment -name SYSTEMVERILOG_FILE piezo_drv_test.sv
 set_global_assignment -name SYSTEMVERILOG_FILE piezo_drv.sv
 set_global_assignment -name SYSTEMVERILOG_FILE dur_cntr.sv
-set_global_assignment -name SYSTEMVERILOG_FILE ../reset_synch.sv
+set_global_assignment -name SYSTEMVERILOG_FILE reset_synch.sv
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
