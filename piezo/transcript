@@ -1,35 +1,6 @@
-# Compile of dur_cntr.sv was successful.
-# Compile of piezo_drv.sv was successful.
-# Compile of piezo_drv_tb.sv was successful.
-# 3 compiles, 0 failed with no errors.
 vsim work.piezo_drv_tb
 # vsim work.piezo_drv_tb 
-# Start time: 12:13:36 on Apr 06,2026
-# Loading sv_std.std
-# Loading work.piezo_drv_tb
-# Loading work.piezo_drv
-# Loading work.dur_cntr
-run -all
-# ** Error: FANFARE_ACTIVE: expected at least 30 toggles, saw 12
-#    Time: 4419030 ns  Scope: piezo_drv_tb.check_min_toggles File: C:/Users/colem/ece551-project/piezo/piezo_drv_tb.sv Line: 87
-# ** Error: FANFARE_NOT_PREEMPTED: expected at least 15 toggles, saw 8
-#    Time: 6819050 ns  Scope: piezo_drv_tb.check_min_toggles File: C:/Users/colem/ece551-project/piezo/piezo_drv_tb.sv Line: 87
-# ** Error: LOW_BATT_CONTINUOUS: expected at least 35 toggles, saw 17
-#    Time: 12115510 ns  Scope: piezo_drv_tb.check_min_toggles File: C:/Users/colem/ece551-project/piezo/piezo_drv_tb.sv Line: 87
-# ** Error: FINAL_IDLE_QUIET: outputs toggled unexpectedly at t=12258250000
-#    Time: 12258250 ns  Scope: piezo_drv_tb.check_stable File: C:/Users/colem/ece551-project/piezo/piezo_drv_tb.sv Line: 43
-# ** Fatal: FAIL: piezo_drv_tb found 4 errors.
-#    Time: 12258250 ns  Scope: piezo_drv_tb File: C:/Users/colem/ece551-project/piezo/piezo_drv_tb.sv Line: 178
-# ** Note: $finish    : C:/Users/colem/ece551-project/piezo/piezo_drv_tb.sv(178)
-#    Time: 12258250 ns  Iteration: 1  Instance: /piezo_drv_tb
-# 1
-# Break in Module piezo_drv_tb at C:/Users/colem/ece551-project/piezo/piezo_drv_tb.sv line 178
-# Compile of piezo_drv_tb.sv was successful.
-vsim work.piezo_drv_tb
-# End time: 12:15:34 on Apr 06,2026, Elapsed time: 0:01:58
-# Errors: 5, Warnings: 6
-# vsim work.piezo_drv_tb 
-# Start time: 12:15:34 on Apr 06,2026
+# Start time: 11:26:16 on Apr 08,2026
 # Loading sv_std.std
 # Loading work.piezo_drv_tb
 # Loading work.piezo_drv
@@ -40,5 +11,30 @@ run -all
 #    Time: 81968490 ns  Iteration: 1  Instance: /piezo_drv_tb
 # 1
 # Break in Module piezo_drv_tb at C:/Users/colem/ece551-project/piezo/piezo_drv_tb.sv line 181
-# End time: 12:15:56 on Apr 06,2026, Elapsed time: 0:00:22
-# Errors: 0, Warnings: 1
+restart
+# ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
+# Note :: PA Debug File '' not found. PA Dataflow Coloring not enabled.
+add wave -position insertpoint  \
+sim:/piezo_drv_tb/clk \
+sim:/piezo_drv_tb/rst_n \
+sim:/piezo_drv_tb/batt_low \
+sim:/piezo_drv_tb/fanfare \
+sim:/piezo_drv_tb/piezo \
+sim:/piezo_drv_tb/piezo_n \
+sim:/piezo_drv_tb/error_count
+run -all
+# PASS: piezo_drv_tb completed with no errors.
+# ** Note: $finish    : C:/Users/colem/ece551-project/piezo/piezo_drv_tb.sv(181)
+#    Time: 81968490 ns  Iteration: 1  Instance: /piezo_drv_tb
+# 1
+# Break in Module piezo_drv_tb at C:/Users/colem/ece551-project/piezo/piezo_drv_tb.sv line 181
+add wave -position insertpoint  \
+sim:/piezo_drv_tb/dut/state \
+sim:/piezo_drv_tb/dut/next_state
+restart
+run -all
+# PASS: piezo_drv_tb completed with no errors.
+# ** Note: $finish    : C:/Users/colem/ece551-project/piezo/piezo_drv_tb.sv(181)
+#    Time: 81968490 ns  Iteration: 1  Instance: /piezo_drv_tb
+# 1
+# Break in Module piezo_drv_tb at C:/Users/colem/ece551-project/piezo/piezo_drv_tb.sv line 181
