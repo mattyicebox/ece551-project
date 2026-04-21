@@ -1,7 +1,7 @@
-module SPI_main(clk, rst_n, SS_n, SCLK, MOSI, MISO, wrt, wt_data, done, rd_data);
+module SPI_main(clk, rst_n, SS_n, SCLK, MOSI, MISO, wrt, cmd, done, rspns);
     input logic clk, rst_n, MISO, wrt;
-    input logic [15:0] wt_data;
-    output logic [15:0] rd_data;
+    input logic [15:0] cmd;
+    output logic [15:0] rspns;
     output logic SS_n, SCLK, MOSI;
     output logic done;
 
@@ -46,7 +46,7 @@ module SPI_main(clk, rst_n, SS_n, SCLK, MOSI, MISO, wrt, wt_data, done, rd_data)
             smpl_cnt   <= 5'd0;
             shft_reg   <= 16'h0000;
             MISO_smpl  <= 1'b0;
-            rd_data    <= 16'h0000;
+            rspns      <= 16'h0000;
             done       <= 1'b0;
         end else begin
             // Start of transaction: load command and create front-porch delay.
@@ -54,7 +54,7 @@ module SPI_main(clk, rst_n, SS_n, SCLK, MOSI, MISO, wrt, wt_data, done, rd_data)
                 active     <= 1'b1;
                 SCLK_div   <= 5'b10111;
                 smpl_cnt   <= 5'd0;
-                shft_reg   <= wt_data;
+                shft_reg   <= cmd;
                 MISO_smpl  <= 1'b0;
                 done       <= 1'b0;
             end else if (active) begin
@@ -65,7 +65,7 @@ module SPI_main(clk, rst_n, SS_n, SCLK, MOSI, MISO, wrt, wt_data, done, rd_data)
                 // End transaction in back porch with one final shift into rd_data.
                 if (finish_now) begin
                     shft_reg <= shft_next;
-                    rd_data  <= shft_next;
+                    rspns    <= shft_next;
                     active   <= 1'b0;
                     done     <= 1'b1;
                 end else begin
