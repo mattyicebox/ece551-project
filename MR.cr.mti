@@ -141,6 +141,13 @@ Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 
 Top level modules:
 	PWM12
 
+} {} {}} C:/Users/matts/OneDrive/Desktop/ece551-project/RemoteComm.sv {1 {vlog -work work -sv -stats=none C:/Users/matts/OneDrive/Desktop/ece551-project/RemoteComm.sv
+Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020
+-- Compiling module RemoteComm
+
+Top level modules:
+	RemoteComm
+
 } {} {}} C:/Users/matts/OneDrive/Desktop/ece551-project/MazeRunnerProvided/MazeRunner.sv {1 {vlog -work work -sv -stats=none C:/Users/matts/OneDrive/Desktop/ece551-project/MazeRunnerProvided/MazeRunner.sv
 Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020
 -- Compiling module MazeRunner
