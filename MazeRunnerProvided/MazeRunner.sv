@@ -37,7 +37,7 @@ module MazeRunner(
   wire strt_mv,strt_hdng;				// actual muxed start signals
   wire stp_lft_cmd,stp_rght_cmd;		// commands navigate unit in command mode
   wire stp_lft_slv,stp_rght_slv;		// commands navigate unit during solver mode
-  wire stp_lft,stp_rght;				// actual stp signal lft/right to navigate unit
+  wire stp_lft,stp_rght;				// actual stp signal lft/right to navigate units
   wire [11:0] lft_IR,rght_IR;			// 12-bit unsigned IR readings for course corrections
   wire [8:0] IR_Dtrm; 					// Need to base fusion corrections on derivative as well
   wire [11:0] vbatt;					// battery voltage from A2D

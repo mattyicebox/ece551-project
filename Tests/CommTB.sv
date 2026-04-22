@@ -128,6 +128,14 @@ module CommTB();
             clr_cmd_rdy = 1'b1;
             @(negedge clk);
             clr_cmd_rdy = 1'b0;
+            // Self-check: cmd_rdy must be deasserted by clr_cmd_rdy
+            if (cmd_rdy !== 1'b0) begin
+                $display("FAIL [%s]: cmd_rdy still high after clr_cmd_rdy pulse", test_name);
+                fail_count++;
+            end else begin
+                $display("PASS [%s]: cmd_rdy cleared by clr_cmd_rdy", test_name);
+                pass_count++;
+            end
         end
 
         @(negedge clk);
