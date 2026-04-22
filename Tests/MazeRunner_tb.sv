@@ -3,11 +3,13 @@ module MazeRunner_tb();
   localparam int unsigned RESET_CYCLES         = 8;
   localparam int unsigned CMD_TIMEOUT_CYCLES   = 300_000;
   localparam int unsigned CAL_TIMEOUT_CYCLES   = 600_000;
-  localparam int unsigned HDNG_TIMEOUT_CYCLES  = 1_000_000;
+  localparam int unsigned HDNG_TIMEOUT_CYCLES  = 3_000_000;
   localparam int unsigned HDNG_TOLERANCE       = 40;
-  localparam logic [15:0] CMD_CALIBRATE        = 16'h0000;
-  localparam logic [15:0] CMD_HEADING_WEST     = 16'h23FF;
+  localparam logic signed [11:0] NORTH_HEADING = 12'sh000;
   localparam logic signed [11:0] WEST_HEADING  = 12'sh3FF;
+  localparam logic signed [11:0] SOUTH_HEADING = 12'sh7FF;
+  localparam logic signed [11:0] EAST_HEADING  = 12'shC00;
+  localparam logic [15:0] CMD_CALIBRATE        = 16'h0000;
   localparam logic [7:0] POS_ACK               = 8'hA5;
 
   logic clk, RST_n;
@@ -120,6 +122,40 @@ module MazeRunner_tb();
   function automatic int unsigned abs_int(input int signed value);
     begin
       abs_int = (value < 0) ? -value : value;
+    end
+  endfunction
+
+  function automatic logic [15:0] make_heading_cmd(input logic signed [11:0] heading);
+    begin
+      make_heading_cmd = 16'h2000 | heading[11:0];
+    end
+  endfunction
+
+  function automatic string heading_name(input logic signed [11:0] heading);
+    begin
+      case (heading)
+        NORTH_HEADING: heading_name = "north";
+        WEST_HEADING:  heading_name = "west";
+        SOUTH_HEADING: heading_name = "south";
+        EAST_HEADING:  heading_name = "east";
+        default:       heading_name = $sformatf("0x%03h", heading[11:0]);
+      endcase
+    end
+  endfunction
+
+  function automatic int signed expected_turn_sign(
+    input logic signed [11:0] start_heading,
+    input logic signed [11:0] target_heading
+  );
+    int signed err;
+    begin
+      err = heading_error(start_heading, target_heading);
+      if (err < 0)
+        expected_turn_sign = 1;
+      else if (err > 0)
+        expected_turn_sign = -1;
+      else
+        expected_turn_sign = 0;
     end
   endfunction
 
@@ -249,7 +285,7 @@ module MazeRunner_tb();
   task automatic exercise_heading_change(
     input logic [15:0] heading_cmd,
     input logic signed [11:0] expected_heading,
-    input bit expect_ccw_turn,
+    input int signed expected_turn_dir,
     input string heading_name
   );
     int unsigned cycles;
@@ -301,15 +337,21 @@ module MazeRunner_tb();
         if (resp_rdy)
           fail("Heading acknowledgement arrived before mv_cmplt");
 
-        if (expect_ccw_turn) begin
+        if (expected_turn_dir > 0) begin
           if (($signed(phys_omega_lft) < 0) && ($signed(phys_omega_rgt) > 0))
             saw_expected_wheel_motion = 1'b1;
           if ($signed(phys_heading_v) > 0)
             saw_expected_yaw_direction = 1'b1;
-        end else begin
+        end else if (expected_turn_dir < 0) begin
           if (($signed(phys_omega_lft) > 0) && ($signed(phys_omega_rgt) < 0))
             saw_expected_wheel_motion = 1'b1;
           if ($signed(phys_heading_v) < 0)
+            saw_expected_yaw_direction = 1'b1;
+        end else begin
+          if ((($signed(phys_omega_lft) < 0) && ($signed(phys_omega_rgt) > 0)) ||
+              (($signed(phys_omega_lft) > 0) && ($signed(phys_omega_rgt) < 0)))
+            saw_expected_wheel_motion = 1'b1;
+          if ($signed(phys_heading_v) != 0)
             saw_expected_yaw_direction = 1'b1;
         end
 
@@ -351,20 +393,63 @@ module MazeRunner_tb();
     end
   endtask
 
-  task automatic run_slide_example();
+  task automatic exercise_correctional_transition(
+    input logic signed [11:0] start_heading,
+    input logic signed [11:0] target_heading
+  );
+    int signed turn_dir;
+    string case_name;
     begin
-      $display("============================================================");
-      $display("Slide scenario: calibrate, then change heading to west");
-      $display("============================================================");
-      exercise_calibration();
-      exercise_heading_change(CMD_HEADING_WEST, WEST_HEADING, 1'b1, "west");
+      check(abs_int(heading_error(dut_actl_hdng, start_heading)) <= HDNG_TOLERANCE,
+            $sformatf("Starting heading is not near %s before commanding %s. actl_hdng=0x%03h",
+                      heading_name(start_heading), heading_name(target_heading), dut_actl_hdng[11:0]));
+
+      turn_dir = expected_turn_sign(start_heading, target_heading);
+      case_name = {heading_name(start_heading), " to ", heading_name(target_heading)};
+
+      exercise_heading_change(
+        make_heading_cmd(target_heading),
+        target_heading,
+        turn_dir,
+        case_name
+      );
     end
   endtask
 
+  task automatic run_correctional_heading_regression();
+    begin
+      $display("============================================================");
+      $display("Full-system correctional heading regression");
+      $display("First case matches the slide example: calibrate, then west");
+      $display("============================================================");
+      exercise_calibration();
+      check(abs_int(heading_error(dut_actl_hdng, NORTH_HEADING)) <= HDNG_TOLERANCE,
+            $sformatf("Post-calibration heading should be near north, observed 0x%03h",
+                      dut_actl_hdng[11:0]));
+
+      // Directed Euler cycle through all 12 non-straight orthogonal corrections.
+      exercise_correctional_transition(NORTH_HEADING, WEST_HEADING);
+      exercise_correctional_transition(WEST_HEADING, SOUTH_HEADING);
+      exercise_correctional_transition(SOUTH_HEADING, NORTH_HEADING);
+      exercise_correctional_transition(NORTH_HEADING, EAST_HEADING);
+      exercise_correctional_transition(EAST_HEADING, SOUTH_HEADING);
+      exercise_correctional_transition(SOUTH_HEADING, WEST_HEADING);
+      exercise_correctional_transition(WEST_HEADING, EAST_HEADING);
+      exercise_correctional_transition(EAST_HEADING, NORTH_HEADING);
+      exercise_correctional_transition(NORTH_HEADING, SOUTH_HEADING);
+      exercise_correctional_transition(SOUTH_HEADING, EAST_HEADING);
+      exercise_correctional_transition(EAST_HEADING, WEST_HEADING);
+      exercise_correctional_transition(WEST_HEADING, NORTH_HEADING);
+    end
+  endtask
+
+  initial
+    clk = 1'b0;
+
   initial begin
     apply_reset();
-    run_slide_example();
-    $display("[%0t] MazeRunner full-system slide scenario PASSED", $time);
+    run_correctional_heading_regression();
+    $display("[%0t] MazeRunner full-system correctional movement regression PASSED", $time);
     $finish;
   end
 
