@@ -106,6 +106,7 @@ module cmd_proc(clk, rst_n, cmd, cmd_rdy, clr_cmd_rdy, send_resp,
         end
 
       CAL: begin
+        strt_cal = 1'b1;
         in_cal = 1'b1;
         if (cal_done) begin
           send_resp = 1'b1;
@@ -113,11 +114,13 @@ module cmd_proc(clk, rst_n, cmd, cmd_rdy, clr_cmd_rdy, send_resp,
         end
       end
 
-      HDNG:
+      HDNG: begin
+        strt_hdng = 1'b1;
         if (mv_cmplt) begin
           send_resp = 1'b1;
           nxt_state = IDLE;
         end
+      end
 
       MOVE:
         if (mv_cmplt) begin
